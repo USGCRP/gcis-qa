@@ -2,17 +2,22 @@
 
 usage() {
     echo $@
-    echo "Usage $0 <url>"
+    echo "Usage $0 <url> [prove options]"
+    echo "Examples :"
+    echo "    $0 http://data-stage.globalchange.gov"
+    echo "    $0 http://data-stage.globalchange.gov -v"
     exit 1;
 }
 
+# url
 url=$1
-
 [ -z "$url" ] && usage "missing url" ;
-
+echo "# testing content of $url"
 export GCIS_API_URL=$url
 
-echo "# testing content of $url"
+# args
+args=$2
 
-prove t/*.t
+# do it
+prove $args t/*.t
 
