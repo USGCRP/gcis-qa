@@ -1,5 +1,15 @@
 #!/bin/bash
 
+function handle_sigint()
+{
+    for proc in `jobs -p`
+    do
+        kill $proc
+    done
+}
+
+trap handle_sigint SIGINT
+
 usage() {
     echo $@
     echo "Usage $0 <url> [prove options]"

@@ -16,18 +16,25 @@ my $report = 'nca3';
 sub check_refs {
     my $what = shift;
     my $chapter_identifier = shift;
-    my @objs = $c->$what(report => $report, chapter_number => $chapter_identifier);
+    my @objs = $c->$what(report => $report, chapter => $chapter_identifier);
 
     for my $f (@objs) {
         my $uri = $f->{uri} or die "missing uri";
+        # diag "checking $uri";
         my $resource = $c->get($uri);
         my %endnote_to_uuid;
 
         my @uuids;
-        for (values %$resource) {
-            next if ref $_;
-            push @uuids, ($_ =~ m[<tbib>([a-z0-9-]+)</tbib>]g);
+        for my $key (keys %$resource) {
+            my $val = $resource->{$key};
+            next if ref $val;
+            #diag "value of $key is $val" if $key =~ /source/;
+            while ($val =~ m[<tbib>([a-z0-9-]{36})</tbib>]g) {
+                push @uuids, $1;
+            }
+            #diag  "after $key we have @uuids";
         }
+        #diag "found @uuids"; 
 
         my $refs = $resource->{references};
         my @have;
@@ -39,7 +46,9 @@ sub check_refs {
         my %in_refs;
         $in_text{$_} = 1 for @uuids;
         $in_refs{$_} = 1 for @have;
-        is_deeply \%in_text, \%in_refs, sprintf("%d uuid%s for $resource->{uri}",scalar keys %in_text,
+        is scalar keys %in_text, scalar keys %in_refs, "uuids matched for $uri";
+        is_deeply \%in_text, \%in_refs, sprintf("%d uuid%s in text matches refs for $resource->{href}",
+                scalar keys %in_text,
                 keys %in_text==1 ? '' : 's');
     }
 }
