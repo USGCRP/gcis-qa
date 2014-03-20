@@ -1,0 +1,16 @@
+This is the GCIS QA repository.
+
+Quick start :
+
+    ./run-tests http://data-stage.globalchange.gov
+
+To run an individual test :
+
+    export GCIS_API_URL=http://data-stage.globalchange.gov
+    prove t/02-client.t
+
+Contents :
+
+    ./run-tests  -- script to run the tests
+    t/           -- directory containing tests
+
