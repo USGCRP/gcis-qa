@@ -18,7 +18,9 @@ ok @$chapters > 0, 'got '.@$chapters.' chapters';
 
 for my $chapter (@$chapters) {
     my @figures = $c->figures(report => $report, chapter => $chapter->{identifier});
-    note "chapter ".($chapter->{number} // $chapter->{identifier})." figures : ".@figures;
+    my $chapter_short = $chapter->{number} // $chapter->{identifier};
+    note "chapter $chapter_short figures : ".@figures;
+    my %ordinals = map { $_ => 1 } 1..@figures;
     for my $figure (@figures) {
         my $href = $figure->{href};
         ok $href, "href for figure $figure->{identifier}";
@@ -27,7 +29,11 @@ for my $chapter (@$chapters) {
         is $figure->{chapter_identifier}, $chapter->{identifier}, "chapter_identifier ok for $href";
         my $json = $c->ua->get($figure->{href})->success->json;
         is $json->{chapter}{identifier}, $chapter->{identifier}, "right chapter identifier for $href";
+        ok defined($json->{ordinal}), "ordinal defined for $href";
+        ok delete $ordinals{$json->{ordinal}}, "ordinal ".($json->{ordinal} // '<undef>')." is in the range 1 to ".@figures;
     }
+    ok ( (keys %ordinals==0), "no missing figure ordinals in chapter $chapter_short" )
+        or diag "missing figure ordinals in chapter $chapter_short : ".join ',', sort keys %ordinals;
 }
  
 done_testing();
