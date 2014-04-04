@@ -46,7 +46,7 @@ sub check_refs {
         my %in_refs;
         $in_text{$_} = 1 for @uuids;
         $in_refs{$_} = 1 for @have;
-        is scalar keys %in_text, scalar keys %in_refs, "uuids matched for $uri";
+        is scalar keys %in_text, scalar keys %in_refs, "uuids matched for $f->{href}";
         is_deeply \%in_text, \%in_refs, sprintf("%d uuid%s in text matches refs for $resource->{href}",
                 scalar keys %in_text,
                 keys %in_text==1 ? '' : 's');
