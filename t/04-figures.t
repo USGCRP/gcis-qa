@@ -15,6 +15,9 @@ my $report = 'nca3';
 
 my $chapters = $c->get("/report/$report/chapter?all=1");
 ok @$chapters > 0, 'got '.@$chapters.' chapters';
+if (my $only_chapter = $ENV{ONLY_CHAPTER}) {
+    @$chapters = grep {$_->{number} eq $only_chapter} @$chapters;
+}
 
 for my $chapter (@$chapters) {
     my @figures = $c->figures(report => $report, chapter => $chapter->{identifier});
