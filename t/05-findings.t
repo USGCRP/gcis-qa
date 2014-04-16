@@ -53,7 +53,7 @@ for my $chapter (@$chapters) {
     }
 
     for my $finding ($c->findings(report => $report, chapter => $chapter->{identifier})) {
-        is $finding->{statement}, $statements{$finding->{ordinal}}, "gcis matches html for $finding->{href}";
+        is $finding->{statement}, $statements{$finding->{ordinal}}, "gcis matches word doc for $finding->{href}";
     }
 
 }
