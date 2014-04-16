@@ -56,6 +56,11 @@ sub check_refs {
 my $chapters = $c->get("/report/$report/chapter?all=1");
 ok @$chapters > 0, 'got '.@$chapters.' chapters';
 
+if (my $only_chapter = $ENV{ONLY_CHAPTER}) {
+    @$chapters = grep {$_->{number} == $only_chapter} @$chapters;
+    die "couldn't find chapter $only_chapter" unless @$chapters==1;
+}
+
 for my $what (qw/figures findings tables/) {
     for my $chapter (@$chapters) {
         note "Checking $what for chapter ".($chapter->{number} || $chapter->{identifier});
