@@ -10,7 +10,7 @@ ok $c, "made client object";
 
 my $nca3 = $c->get('/report/nca3');
 
-is $nca3->{title}, "Third National Climate Assessment", "NCA3 report title";
+like $nca3->{title}, qr/Third National Climate Assessment/, "NCA3 report title";
 
 done_testing();
 

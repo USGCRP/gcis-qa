@@ -62,6 +62,10 @@ if (my $only_chapter = $ENV{ONLY_CHAPTER}) {
 }
 
 for my $what (qw/figures findings tables/) {
+    if ($what eq 'tables') {
+        note "skipping tables";
+        next;
+    }
     for my $chapter (@$chapters) {
         note "Checking $what for chapter ".($chapter->{number} || $chapter->{identifier});
         check_refs($what, $chapter->{identifier});
