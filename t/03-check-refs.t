@@ -53,6 +53,18 @@ sub check_refs {
     }
 }
 
+sub no_tbibs_in_titles {
+    my $what = shift;
+    my $chapter_identifier = shift;
+    my @objs = $c->$what(report => $report, chapter => $chapter_identifier);
+    for my $f (@objs) {
+        my $uri = $f->{uri} or die "missing uri";
+        my $resource = $c->get($uri);
+        unlike $resource->{title}, qr/tbib/, "no tbib in title of $f->{href}";
+    }
+}
+
+
 my $chapters = $c->get("/report/$report/chapter?all=1");
 ok @$chapters > 0, 'got '.@$chapters.' chapters';
 
@@ -63,6 +75,9 @@ if (my $only_chapter = $ENV{ONLY_CHAPTER}) {
 
 for my $what (qw/figures findings tables/) {
     if ($what eq 'tables') {
+        for my $chapter (@$chapters) {
+            no_tbibs_in_titles("tables", $chapter->{identifier});
+        }
         note "skipping tables";
         next;
     }
