@@ -18,19 +18,22 @@ my $articles = $c->get('/article');
 ok scalar @$articles, "got some articles";
 note "count : ".@$articles;
 
-for my $article (@$articles) {
-    my $doi = $article->{doi};
-    my $uri = $article->{uri};
-    my $href = $article->{href};
-    ok $doi, "got a doi";
-    my $crossref = $d->get("/$doi");
-    ok keys %$crossref, "Valid doi : http://dx.doi.org/$doi";
-    SKIP: {
-        skip "Missing crossref data for $doi", 1 unless keys %$crossref;
-        is $crossref->{title}, $article->{title}, "title" or diag "got http://dx.doi.org/$doi for $href";
-        #is $article->{journal_vol},    $crossref->{volume}, "volume";
-        #is $article->{year},           $crossref->{issued}{'date-parts'}[0][0], "year";
-        #is $article->{journal}{title}, $crossref->{'container-title'}, "journal title";
+TODO : {
+    local $TODO = "sync with dx.doi.org";
+    for my $article (@$articles) {
+        my $doi = $article->{doi};
+        my $uri = $article->{uri};
+        my $href = $article->{href};
+        ok $doi, "got a doi";
+        my $crossref = $d->get("/$doi");
+        ok keys %$crossref, "Valid doi : http://dx.doi.org/$doi";
+        SKIP: {
+            skip "Missing crossref data for $doi", 1 unless keys %$crossref;
+            is $crossref->{title}, $article->{title}, "title" or diag "got http://dx.doi.org/$doi for $href";
+            #is $article->{journal_vol},    $crossref->{volume}, "volume";
+            #is $article->{year},           $crossref->{issued}{'date-parts'}[0][0], "year";
+            #is $article->{journal}{title}, $crossref->{'container-title'}, "journal title";
+        }
     }
 }
 
