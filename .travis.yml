@@ -1,0 +1,7 @@
+language: perl
+perl:
+  - "5.16"
+before_install :
+  - cpanm Mojolicious@4.99
+env: GCIS_API_URL=http://data.globalchange.gov
+
