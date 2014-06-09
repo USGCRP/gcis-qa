@@ -1,7 +1,7 @@
 Build.PL
 etc/MANIFEST.nca3
 MANIFEST			This list of files
-README
+README.md
 run-tests
 t/00-basic.t
 t/02-client.t
