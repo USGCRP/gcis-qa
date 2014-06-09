@@ -12,7 +12,7 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     requires => {
-        'Gcis::Client' => '0.05',
+        'Gcis::Client' => '0.06',
     },
     add_to_cleanup     => [ 'Gcis-Client-*' ],
     create_makefile_pl => 'traditional',
