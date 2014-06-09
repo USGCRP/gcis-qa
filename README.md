@@ -1,4 +1,5 @@
-This is the GCIS QA repository.
+Global Change Information System QA [![Build Status](https://secure.travis-ci.org/USGCRP/gcis-qa.png)](http://travis-ci.org/USGCRP/gcis-qa)
+====================================
 
 Quick start :
 
