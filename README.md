@@ -10,6 +10,10 @@ To run an individual test :
     export GCIS_API_URL=http://data.globalchange.gov
     prove t/02-client.t
 
+Or :
+   perl Build.PL
+   GCIS_API_URL=http://data.globalchange.gov ./Build test
+
 Contents :
 
     ./run-tests  -- script to run the tests
