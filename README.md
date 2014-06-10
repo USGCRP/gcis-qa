@@ -11,8 +11,9 @@ To run an individual test :
     prove t/02-client.t
 
 Or :
-   perl Build.PL
-   GCIS_API_URL=http://data.globalchange.gov ./Build test
+    export GCIS_API_URL=http://data.globalchange.gov
+    perl Build.PL
+    ./Build test
 
 Contents :
 
