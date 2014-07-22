@@ -1,7 +1,5 @@
 language: perl
 perl:
   - "5.16"
-before_install :
-  - MOJO_LOG_LEVEL= cpanm Mojolicious@4.99
 env: GCIS_API_URL=http://data.globalchange.gov GCIS_API_DELAY=1 MOJO_LOG_LEVEL=info
 
