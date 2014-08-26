@@ -29,7 +29,7 @@ for my $article (@$articles) {
     SKIP: {
         skip "Missing crossref data for $doi", 1 unless keys %$crossref;
         is $crossref->{title}, $article->{title}, "title for $href" or diag "got http://dx.doi.org/$doi for $href";
-        is $article->{year},           $crossref->{issued}{'date-parts'}[0][0], "year for $href";
+        is $article->{year},           $crossref->{deposited}{'date-parts'}[0][0], "year for $href";
         is $article->{journal_vol},    $crossref->{volume}, "volume for $href";
         #is $article->{journal}{title}, $crossref->{'container-title'}, "journal title";
     }
