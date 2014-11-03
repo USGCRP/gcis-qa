@@ -12,6 +12,8 @@ use strict;
 my $c = Gcis::Client->new->use_env;
 my $d = Gcis::Client->new->accept("application/vnd.citationstyles.csl+json;q=0.5")
                           ->url("http://dx.doi.org");
+my $r = Gcis::Client->new->accept("application/json;q=0.5")
+                          ->url("http://api.crossref.org");
 
 my $articles = $c->get('/article');
 
@@ -33,7 +35,9 @@ for my $article (@$articles) {
         is $article->{journal_vol},    $crossref->{volume}, "volume for $href";
 
         my $journal = $c->get("/journal/$article->{journal_identifier}");
-        is $journal->{title}, $crossref->{'container-title'}, "journal title for $href";
+        my $issn = $crossref->{ISSN}[0];
+        my $crossref_journal = $r->get("/journals/issn:$issn");
+        is $journal->{title}, $crossref_journal->{message}{title}, "journal title for $href";
     }
 }
 
