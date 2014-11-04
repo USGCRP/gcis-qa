@@ -31,8 +31,17 @@ for my $article (@$articles) {
     SKIP: {
         skip "Missing crossref data for $doi", 1 unless keys %$crossref;
         is $article->{title}, $crossref->{title}, "title for $href" or diag "got http://dx.doi.org/$doi for $href";
-        is $article->{year},           $crossref->{issued}{'date-parts'}[0][0], "year for $href";
-        is $article->{journal_vol},    $crossref->{volume}, "volume for $href";
+
+        # CrossRef year may be the prior year (when the on-line version was issued) - this is okay for now
+
+        my $year = $crossref->{issued}{'date-parts'}[0][0];
+        if ($article->{year} == ($year + 1)) {
+          ok $article->{year}, "year off by one for $href";
+        } else {
+          is $article->{year}, $year, "year for $href";
+        }
+
+        is $article->{journal_vol}, $crossref->{volume}, "volume for $href";
 
         my $journal = $c->get("/journal/$article->{journal_identifier}");
         my $issn = $crossref->{ISSN}[0];
