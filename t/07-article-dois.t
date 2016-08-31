@@ -15,7 +15,8 @@ my $d = Gcis::Client->new->accept("application/vnd.citationstyles.csl+json;q=0.5
 my $r = Gcis::Client->new->accept("application/json;q=0.5")
                           ->url("http://api.crossref.org");
 
-my $articles = $c->get('/article');
+my $param="?all=1";
+my $articles = $c->get("/article$param");
 
 ok scalar @$articles, "got some articles";
 note "count : ".@$articles;
